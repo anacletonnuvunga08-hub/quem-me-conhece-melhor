@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Quem Nos Conhece Melhor? 💕</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  min-height: 100dvh;
+  background: radial-gradient(circle at top, #1b1042 0%, #0a0620 60%, #050310 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  overflow-x: hidden;
+}
+
+.app {
+  width: 100%;
+  max-width: 900px;
+}
+
+/* =========================
+   TÍTULO
+========================= */
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  background: linear-gradient(90deg,#ffd166,#ff5da2,#ffd166);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #c9b8ff;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+  background: linear-gradient(145deg,#1c1240,#100a2a);
+  border: 2px solid #5b3aa0;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow:
+    0 0 40px rgba(150,90,255,0.35),
+    inset 0 0 20px rgba(255,255,255,0.03);
+}
+
+/* =========================
+   SETUP
+========================= */
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #ffd166;
+  font-weight: 600;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 2px solid #5b3aa0;
+  background: #0f0a26;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+}
+
+.input-group input:focus {
+  border-color: #ff5da2;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+.btn {
+  display: inline-block;
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(90deg,#ff5da2,#ffd166);
+  color: #1a0e35;
+  font-weight: 800;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  letter-spacing: 0.5px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255,93,162,0.45);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn.secondary {
+  background: transparent;
+  border: 2px solid #ff5da2;
+  color: #ff5da2;
+}
+
+/* ==================================================
+   GAME SCREEN
+================================================== */
+
+#game-screen {
+  width: 100%;
+}
+
+.game-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 210px;
+  gap: 14px;
+  align-items: stretch;
+}
+
+/* =========================
+   PARTE PRINCIPAL DO JOGO
+========================= */
+
+.game-layout > .card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+
+.question-count {
+  color: #c9b8ff;
+  font-size: 0.85rem;
+}
+
+.timer-wrap {
+  height: 7px;
+  width: 100%;
+  background: #2a1c55;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.timer-bar {
+  height: 100%;
+  background: linear-gradient(90deg,#ff5da2,#ffd166);
+  width: 100%;
+  transition: width 1s linear;
+}
+
+.turn-banner {
+  text-align: center;
+  padding: 9px 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  line-height: 1.25;
+}
+
+.turn-banner.secret {
+  background: rgba(255,93,162,0.15);
+  border: 1px solid #ff5da2;
+  color: #ffb6d5;
+}
+
+.turn-banner.guess {
+  background: rgba(255,209,102,0.12);
+  border: 1px solid #ffd166;
+  color: #ffe9b0;
+}
+
+.question-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  line-height: 1.3;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+/* =========================
+   RESPOSTAS
+========================= */
+
+.options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.option {
+  background: #150c33;
+  border: 2px solid #4a3080;
+  border-radius: 11px;
+  padding: 11px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 54px;
+  line-height: 1.2;
+}
+
+.option:hover {
+  border-color: #ff5da2;
+  background: #1d1244;
+}
+
+.option .letter {
+  background: #5b3aa0;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+}
+
+.option.correct {
+  border-color: #4ade80;
+  background: rgba(74,222,128,0.15);
+}
+
+.option.wrong {
+  border-color: #f87171;
+  background: rgba(248,113,113,0.15);
+}
+
+.option.disabled {
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+/* =========================
+   FEEDBACK
+========================= */
+
+.feedback {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 0.92rem;
+  font-weight: 700;
+  min-height: 24px;
+  line-height: 1.2;
+}
+
+.feedback.correct {
+  color: #4ade80;
+}
+
+.feedback.wrong {
+  color: #f87171;
+}
+
+#next-btn {
+  margin-top: 8px;
+  padding: 11px;
+  font-size: 0.95rem;
+}
+
+/* ==================================================
+   ESCADA
+================================================== */
+
+.ladder {
+  background: #0f0a26;
+  border: 2px solid #4a3080;
+  border-radius: 16px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 3px;
+  font-size: 0.75rem;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.ladder-item {
+  padding: 5px 7px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  color: #8a7ab8;
+}
+
+.ladder-item.current {
+  background: linear-gradient(90deg,#ff5da2,#ffd166);
+  color: #1a0e35;
+  font-weight: 800;
+}
+
+.ladder-item.passed {
+  color: #ffd166;
+}
+
+/* ==================================================
+   RESULT
+================================================== */
+
+.result-emoji {
+  font-size: 4rem;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.result-title {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #ffd166;
+}
+
+.result-sub {
+  text-align: center;
+  color: #c9b8ff;
+  margin-bottom: 24px;
+}
+
+.result-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 26px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat .num {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ff9ec7;
+}
+
+.stat .label {
+  color: #c9b8ff;
+  font-size: 0.85rem;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+  text-align: center;
+  margin-top: 12px;
+  color: #5b4d8a;
+  font-size: 0.8rem;
+}
+
+/* ==================================================
+   CELULAR
+================================================== */
+
+@media (max-width: 700px) {
+
+  body {
+    padding: 6px;
+    align-items: center;
+  }
+
+  .app {
+    max-width: 100%;
+  }
+
+  /* Enquanto o jogo está aberto,
+     título e footer desaparecem para
+     liberar espaço vertical. */
+
+  body.game-playing h1,
+  body.game-playing .subtitle,
+  body.game-playing footer {
+    display: none;
+  }
+
+  body.game-playing {
+    height: 100dvh;
+    min-height: 100dvh;
+    overflow: hidden;
+  }
+
+  body.game-playing .app {
+    height: 100%;
+  }
+
+  body.game-playing #game-screen {
+    height: 100%;
+  }
+
+  /* O GAME SCREEN NÃO VIRA MAIS
+     UMA COLUNA */
+
+  .game-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: 7px;
+    height: 100%;
+  }
+
+  .game-layout > .card {
+    height: 100%;
+    min-height: 0;
+    padding: 12px;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+
+  /* Escada compacta embaixo */
+
+  .ladder {
+    order: 2;
+    height: auto;
+    max-height: 82px;
+
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+
+    gap: 3px;
+    padding: 5px;
+
+    overflow: hidden;
+    border-radius: 11px;
+  }
+
+  .ladder-item {
+    padding: 3px 4px;
+    font-size: 0.58rem;
+    min-height: 20px;
+  }
+
+  .top-bar {
+    margin-bottom: 7px;
+  }
+
+  .question-count {
+    font-size: 0.76rem;
+  }
+
+  .timer-wrap {
+    height: 6px;
+    margin-bottom: 8px;
+  }
+
+  .turn-banner {
+    padding: 7px 8px;
+    margin-bottom: 8px;
+    font-size: 0.76rem;
+    line-height: 1.2;
+  }
+
+  .question-text {
+    font-size: 1rem;
+    min-height: 40px;
+    margin-bottom: 9px;
+    line-height: 1.25;
+  }
+
+  .options {
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+  }
+
+  .option {
+    min-height: 46px;
+    padding: 7px;
+    font-size: 0.78rem;
+    gap: 6px;
+    border-radius: 9px;
+  }
+
+  .option .letter {
+    width: 22px;
+    height: 22px;
+    font-size: 0.7rem;
+  }
+
+  .feedback {
+    margin-top: 7px;
+    min-height: 20px;
+    font-size: 0.78rem;
+  }
+
+  #next-btn {
+    margin-top: 5px;
+    padding: 8px;
+    font-size: 0.82rem;
+  }
+}
+
+/* ==================================================
+   CELULARES MUITO PEQUENOS
+================================================== */
+
+@media (max-width: 380px) {
+
+  .game-layout > .card {
+    padding: 9px;
+  }
+
+  .turn-banner {
+    font-size: 0.7rem;
+  }
+
+  .question-text {
+    font-size: 0.92rem;
+  }
+
+  .option {
+    min-height: 42px;
+    padding: 6px;
+    font-size: 0.72rem;
+  }
+
+  .option .letter {
+    width: 20px;
+    height: 20px;
+  }
+
+  .ladder {
+    max-height: 72px;
+  }
+
+  .ladder-item {
+    font-size: 0.52rem;
+  }
+}
+
+/* ==================================================
+   PAISAGEM NO CELULAR
+================================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+  body.game-playing {
+    overflow: hidden;
+  }
+
+  body.game-playing h1,
+  body.game-playing .subtitle,
+  body.game-playing footer {
+    display: none;
+  }
+
+  .game-layout {
+    grid-template-columns: minmax(0, 1fr) 155px;
+    grid-template-rows: 1fr;
+    height: 100dvh;
+  }
+
+  .game-layout > .card {
+    padding: 10px;
+  }
+
+  .ladder {
+    height: 100%;
+    max-height: none;
+  }
+
+  .option {
+    min-height: 40px;
+    padding: 6px;
+    font-size: 0.75rem;
+  }
+
+  .turn-banner {
+    padding: 5px;
+    margin-bottom: 6px;
+  }
+
+  .question-text {
+    margin-bottom: 7px;
+  }
+}
+
+.result-achievements {
+  margin: 16px 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.achievement {
+  padding: 8px 10px;
+  margin: 6px 0;
+  border-radius: 10px;
+  background: rgba(255,255,255,.08);
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <h1>Quem me Conhece Melhor? 💕</h1>
+
+  <p class="subtitle">
+    O jogo de afinidade de casais e amigos 
+  </p>
+
+  <!-- =========================
+       SETUP SCREEN
+  ========================== -->
+
+  <div class="screen active" id="setup-screen">
+
+    <div class="card">
+
+      <div class="input-group">
+        <label>jogador 1</label>
+        <input
+          type="text"
+          id="p1-name"
+          placeholder="Ex: Ana"
+          maxlength="20"
+        >
+      </div>
+
+      <div class="input-group">
+        <label>jogador 2</label>
+        <input
+          type="text"
+          id="p2-name"
+          placeholder="Ex: Bruno"
+          maxlength="20"
+        >
+      </div>
+
+      <button class="btn" onclick="startGame()">
+        Começar o Jogo 🎮
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- =========================
+       GAME SCREEN
+  ========================== -->
+
+  <div class="screen" id="game-screen">
+
+    <div class="game-layout">
+
+      <div class="card">
+
+        <div class="top-bar">
+
+          <span class="question-count" id="question-count">
+            Pergunta 1 de 25
+          </span>
+
+          <span class="question-count" id="score-count">
+            Acertos: 0
+          </span>
+
+          <span class="question-count" id="streak-count">
+            🔥 Sequência: 0
+          </span>
+
+        </div>
+
+        <div class="timer-wrap">
+          <div class="timer-bar" id="timer-bar"></div>
+        </div>
+
+        <div class="turn-banner" id="turn-banner"></div>
+
+        <div class="question-text" id="question-text"></div>
+
+        <div class="options" id="options"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <button
+          class="btn"
+          id="next-btn"
+          style="display:none"
+          onclick="nextStep()"
+        >
+          Próxima ➡️
+        </button>
+
+      </div>
+
+      <div class="ladder" id="ladder"></div>
+
+    </div>
+
+  </div>
+
+  <!-- =========================
+       RESULT SCREEN
+  ========================== -->
+
+  <div class="screen" id="result-screen">
+
+    <div class="card">
+
+      <div class="result-emoji" id="result-emoji"></div>
+
+      <div class="result-title" id="result-title"></div>
+
+      <p class="result-sub" id="result-sub"></p>
+
+      <div class="result-stats">
+
+        <div class="stat">
+          <div class="num" id="stat-streak"></div>
+          <div class="label">melhor sequência</div>
+        </div>
+
+        <div class="stat">
+          <div class="num" id="stat-correct"></div>
+          <div class="label">acertos</div>
+        </div>
+
+        <div class="stat">
+          <div class="num" id="stat-percent"></div>
+          <div class="label">de afinidade</div>
+        </div>
+
+        <div class="stat">
+          <div class="num" id="stat-prize"></div>
+          <div class="label">prêmio conquistado</div>
+        </div>
+
+      </div>
+
+      <div class="result-achievements" id="result-achievements"></div>
+
+      <button class="btn" onclick="resetGame()">
+        Jogar Novamente 🔁
+      </button>
+
+    </div>
+
+  </div>
+
+  <footer>
+    Feito com 💜 para casais curiosos
+  </footer>
+
+</div>
+
+<script>
+
+/* =========================
+   PRÊMIOS
+========================= */
+
+const LADDER = [
+  50,
+  100,
+  150,
+  200,
+  250,
+  300,
+  350,
+  400,
+  450,
+  500,
+  550,
+  600,
+  650,
+  700,
+  750,
+  800,
+  850,
+  900,
+  950,
+  100,
+  1000,
+  10000,
+  50000,
+  100000,
+  1000000
+];
+
+/* =========================
+   PERGUNTAS
+========================= */
+
+const QUESTIONS = [
+
+  {
+    q: "Qual é o meu maior sonho de viagem?",
+    o: ["Paris", "Maldivas", "brasil", "Nova York"]
+  },
+
+  {
+    q: "Qual é a minha comida favorita?",
+    o: ["Feijao", "Carne assada", "Batata frita", "Guisados"]
+  },
+
+  {
+    q: "Se pudesse ter um superpoder, qual escolheria?",
+    o: ["Voar", "Ler mentes", "Invisibilidade", "Teletransporte"]
+  },
+
+  {
+    q: "Qual é o meu maior medo?",
+    o: ["Altura", "Escuro", "Solidão", "Perder alguém querido"]
+  },
+
+  {
+    q: "Qual seria o meu presente perfeito?",
+    o: ["Joia", "Uma viagem", "roupas", "Algo feito à mão"]
+  },
+
+  {
+    q: "Qual dia da semana eu mais gosto?",
+    o: ["Sexta", "Sábado", "Domingo", "Segunda (recomeço)"]
+  },
+
+  {
+    q: "Qual é o meu encontro perfeito?",
+    o: ["Jantar romântico", "Cinema", "Aventura ao ar livre", "Ficar em casa"]
+  },
+
+  {
+    q: "O que eu mais valoriza em um relacionamento?",
+    o: ["Confiança", "Comunicação", "Cumplicidade", "Paixão"]
+  },
+
+  {
+    q: "Qual animal de estimação eu adotaria?",
+    o: ["Cachorro", "Gato", "Nenhum", "Outro (pássaro, peixe...)"]
+  },
+
+  {
+    q: "Qual é a minha estação do ano favorita?",
+    o: ["Verão", "Inverno", "Primavera", "Outono"]
+  },
+
+  {
+    q: "Como eu prefiro resolver uma briga?",
+    o: [
+      "Conversando na hora",
+      "Dando um tempo antes",
+      "ganhando razao",
+      "Pedindo desculpas primeiro"
+    ]
+  },
+
+  {
+    q: "Qual é o meu maior sonho de vida?",
+    o: [
+      "Ter uma família grande",
+      "Ter sucesso profissional",
+      "Viajar o mundo",
+      "Viver tranquilo(a)"
+    ]
+  },
+
+  {
+    q: "Se ganhasse na loteria, o que faria primeiro?",
+    o: [
+      "Viajar",
+      "Comprar uma casa",
+      "Investir",
+      "Ajudar a família"
+    ]
+  },
+
+  {
+    q: "Qual gênero de filme mais combina com a gente?",
+    o: [
+      "Comédia romântica",
+      "Drama",
+      "Aventura",
+      "Dorama"
+    ]
+  },
+
+  {
+    q: "Qual é o meu sonho para o nosso futuro juntos?",
+    o: [
+      "Casa própria",
+      "Viajar o mundo juntos",
+      "Construir uma família",
+      "Simplesmente ser feliz ao seu lado"
+    ]
+  },
+
+ {
+    q: "Como eu gosto de demostrar carinho?",
+    o: [
+      "Com palvras",
+      "Através de abraços e contacto físico",
+      "Atraves de presentes e surpresas",
+      "Atraves de atitudes e ajuda"
+    ]
+  },
+
+   {
+    q: "O que mais faria eu perder a confiança em alguém?",
+    o: [
+      "Mentiras",
+      "Traição",
+      "Falta de respeito",
+      "Falta de compromisso"
+    ]
+   },  
+   
+   {
+    q: "Quando alguém comete um erro comigo, eu:" ,
+    o: [
+      "Perdoo facilmente",
+      "Perdoo mais demoro confiar ",
+      "Depende do erro",
+      "Nao consigo perdoar"
+    ]
+   },
+ {
+    q: "No futuro, eu gostaria de viver:" ,
+    o: [
+      "No meu pais",
+      "Em outro pais ",
+      "Onde houver melhores condiçoes",
+      "Em lugares diferentes"
+    ]
+   },
+
+    {
+    q: "Quando alguém que gosto tem uma opinião diferente da minha, eu:" ,
+    o: [
+      "Tento intender o ponto de vista da pessoa",
+      "Converso para encontrar um equilibiro ",
+      "Respeito a opinião, mas mantenho a minha",
+      "Tenho dificuldades em aceitar"
+    ]
+   },
+
+
+ {
+    q: "Se eu tivesse de viver sem uma destas coisas durante um mês, escolheria ficar sem:" ,
+    o: [
+      "Redes sociais",
+      "Televisao ",
+      "Dinheiro",
+      "Meu namorado ou minha namorada"
+    ]
+   },
+
+
+ {
+    q: "Quando estou numa festa, normalmente eu:" ,
+    o: [
+      "Danço bastante",
+      "Fico conversando com as pessoas ",
+      "Fico observando",
+      "Procuro alguem conhecido"
+    ]
+   },
+
+    {
+    q: "Quando estou com amigos, normalmente sou a pessoa que:" ,
+    o: [
+      "Manda piadas",
+      "Fica calada ",
+      "Conta historias",
+      "Deixa todos na linha"
+    ]
+   },
+
+    {
+    q: "Se eu tivesse de escolher uma característica para conquistar alguém, escolheria:" ,
+    o: [
+      "Minha beleza",
+      "Minha inteligencia ",
+      "Meu humor",
+      "Meu romantismo"
+    ]
+   },
+
+    {
+    q: "O que mais me deixa com vergonha quando estou com quem amo" ,
+    o: [
+      "Receber elogio",
+      "Ficar olhando nos olhos",
+      "Receber carinho",
+      "Falar dos meus sentimentos"
+    ]
+   },
+
+    {
+    q: "Qual mensagem eu gostaria de receber a noite?" ,
+    o: [
+      "Sinto sua falta",
+      "Queria estar contigo",
+      "Voce e especial para mim",
+      "Estou pensando em ti"
+    ]
+   },
+
+    {
+    q: "Qual e o meu maior defeito?" ,
+    o: [
+      "Ser teimoso(a)",
+      "Ser preguicosa(a) ",
+      "pensar demais",
+      "Confiar demais nas pessoas"
+    ]
+   },
+
+    {
+    q: "Qual dessas coisas me errita?" ,
+    o: [
+      "Mentiras",
+      "Ser ignorada(o) ",
+      "Barulho",
+      "atrasos"
+    ]
+   },
+
+    {
+    q: "Quando estou triste, normalmente eu..." ,
+    o: [
+      "Fico sozinho(a)",
+      "Converso com alguem ",
+      "Escuto musica",
+      "Finjo que esta tudo bem"
+    ]
+   },
+
+    {
+    q: "Qual dessas coisas me fariam ficar ate as 3h da manha?" ,
+    o: [
+      "Ficar no celular",
+      "Conversar com alguem ",
+      "Assistir",
+      "Problemas"
+    ]
+   },
+
+    {
+    q: "Se eu pudesse voltar a uma epoca da minha vida, escolheria..." ,
+    o: [
+      "Infancia",
+      "Adolescencia ",
+      "Epoca da escola",
+      "Nao voltaria"
+    ]
+   },
+
+    {
+    q: "Se minha vida fosse um filme. qual seria o genero?" ,
+    o: [
+      "accao",
+      "drama ",
+      "aventura",
+      "comedia"
+    ]
+   },  {
+    q: "Qual dessas frases combina comigo?" ,
+    o: [
+      "Confia em mim",
+      "Tenho um plano ",
+      "Nao conta pra ninguem",
+      "Nao fui eu"
+    ]
+   },
+
+    {
+    q: "se eu pudesse trocar de vida com alguem por uma semana, escolheria?" ,
+    o: [
+      "Um milionario",
+      "Uma(um) atriz(ator) ",
+      "Um cantor",
+      "Meu(minha) namorada(o)"
+    ]
+   },
+
+     {
+    q: "Qual seria minha maior fraqueza num relacionamento?" ,
+    o: [
+      "Ciumes",
+      "Apego ",
+      "Medo de perder a pessoa",
+      "Dificuldade de demostrar sentimentos"
+    ]
+   },
+
+     {
+    q: "Qual momento seria mais especial para mim?" ,
+    o: [
+      "Primeiro beijo",
+      "Primeiro encontro ",
+      "Primeira noite conversando ate tarde",
+      "Primeiro presente"
+    ]
+   },
+
+     {
+    q: "O que eu faria para te salvar?" ,
+    o: [
+      "Mentiria",
+      "Mataria ",
+      "Roubaria",
+      "Morreria"
+    ]
+   },
+
+     {
+    q: "Qual e a minha cor favorita?" ,
+    o: [
+      "Azul",
+      "Verde ",
+      "Rosa",
+      "Nenhuma dessas"
+    ]
+   },
+
+     {
+    q: "Estamos afundando e so podes salvar uma pessoa, quem salvarias?" ,
+    o: [
+      "Eu",
+      "Nosso filho ",
+      "Teu irmao",
+      "Tua mae"
+    ]
+   },
+
+     {
+    q: "Qual dessas coisas eu escolheria saber sobre meu futuro?" ,
+    o: [
+      "Com quem vou casar",
+      "Quanto dinheiro vou ganhar ",
+      "Como vou morrer",
+      "Quantos filhos terei"
+    ]
+   },
+
+     {
+    q: "Um talento que tenho e ninguem nota?" ,
+    o: [
+      "Cantar",
+      "Ser engracado",
+      "Cozinhar bem",
+      "Dancar"
+    ]
+   },
+
+     {
+    q: "Se minha vida fosse uma comedia, qual seria o titulo?" ,
+    o: [
+      "Tudo da errado",
+      "Eu tentei ",
+      "A que nao podia amar",
+      "Isso so acontece comigo"
+    ]
+   },
+
+     {
+    q: "Como eu gosto de passar meu tempo livre?" ,
+    o: [
+      "Assistindo",
+      "Teclando",
+      "Saindo com amigos",
+      "Ficar em casa"
+    ]
+   },
+
+     {
+    q: "Qual dessas coisas me faria rir numa situacao seria?" ,
+    o: [
+      "Uma piada",
+      "Alguem tropecar",
+      "Alguem peidar",
+      "Alguem fazer caretas"
+    ]
+   },
+
+     {
+    q:"Se eu fosse um personagem de filme, seria o..." ,
+    o: [
+      "Heroi",
+      "Vilao ",
+      "Comediante",
+      "Genio"
+    ]
+   },
+
+   {
+    q: "Se eu pudesse apagar uma coisa da minha rotina, seria..." ,
+    o: [
+      "Acordar cedo",
+      "Estudar",
+      "trabalhar",
+      "Fazer tarefas domesticas"
+    ]
+   },
+   
+     {
+    q: "qual dessas gosto de fazer quando estou sozinho?" ,
+    o: [
+      "dancar",
+      "cantar ",
+      "falar sozinho",
+      "dormir"
+    ]
+   },
+
+     {
+    q: "Se eu fosse preso por uma coisa absurda, provavelmene seria por..." ,
+    o: [
+      "Falar muito",
+      "Entrar onde nao devia ",
+      "Ser muito bonita (o)",
+      "Postar muitos memes"
+    ]
+   },
+
+     {
+    q: "Se eu fosse um animal, qual seria?" ,
+    o: [
+      "Gato(a)",
+      "Cao (a) ",
+      "Macaco",
+      "leao (leoa)"
+    ]
+   },
+
+     {
+    q: "Se eu pudesse eliminar uma emocao da minha vida, escolheria eliminar..." ,
+    o: [
+      "Medo",
+      "Ciumes ",
+      "Culpa",
+      "Orgulho"
+    ]
+   },
+
+        {
+    q: "O que me faria querer continuar conversando com alguem?" ,
+    o: [
+      "Boas piadas",
+      "Aparencia ",
+      "Simpatia",
+      "Inteligencia"
+    ]
+   },
+
+
+        {
+    q: "Qual dessas coisas combina mais comingo?" ,
+    o: [
+      "Aventura",
+      "Traquilidade",
+      "Ambicao",
+      "Criatividade"
+    ]
+   },
+
+
+        {
+    q: "Qual pergunta eu gostaria que alguem me fizesse quanto estamos nos conhecendo?" ,
+    o: [
+      "Qual e o teu maior sonho?",
+      "O que te faz feliz?",
+      "Como voce e?",
+      "O que procuras numa pessoa?"
+    ]
+   },
+
+        {
+    q: "O que mais me faz sentir verdadeiramente compreendida(o)?" ,
+    o: [
+      "Alguem ouvir sem julgar",
+      "Receber criticas",
+      "Receber conselhos",
+      "Alguem passar tempo comigo"
+    ]
+   },
+
+
+        {
+    q: "Qual e uma coisa que eu dificilmente conto para alguem que acabo de conhecer?" ,
+    o: [
+      "Meus medos",
+      "Meus problemas",
+      "Meus sonhos",
+      "Meu passado"
+    ]
+   },
+
+
+        {
+    q: "O que eu mais gostaria que alguem entendesse sobre mim sem eu precisar explicar" ,
+    o: [
+      "Meus sentimentos",
+      "Minhas insegurancas",
+      "Meus desejos",
+      "MEu jeito de ser"
+    ]
+   },
+
+
+        {
+    q: "Qual situacao faria eu sentir que realmente posso confiar em alguem" ,
+    o: [
+      "Guardar um segredo meu",
+      "Estar comigo num momento dificil  ",
+      "Defender-me quando nao estou presente",
+      "comprir uma promessa"
+    ]
+   },
+
+
+        {
+    q: "Qual seria a melhor maneira de me conquistar emocionalmente" ,
+    o: [
+      "ser sempre sincero",
+      "Dar-me sempre atencao",
+      "Apoiar meus sonhos",
+      "Fazer me sentir seguro"
+    ]
+   },
+
+
+        {
+    q: "Qual e uma coisa que eu gostaria de mudar em mim?" ,
+    o: [
+      "Minha timidez",
+      "Minha forma de pensar ",
+      "Minha dificuldade de confiar",
+      "Minha maneira de lidar com sentimentos"
+    ]
+   },
+
+
+        {
+    q: "O que me faz sentir amado(a)" ,
+    o: [
+      "Atencao",
+      "Palavras carinhosas",
+      "Atitudes",
+      "Presentes"
+    ]
+   },
+
+        {
+    q: "Se eu estivesse triste e dissese ( estou bem ) o que eu gostaria que alguem fizesse? " ,
+    o: [
+      "Respeite o meu espaco",
+      "Perguntasse novamente",
+      "Me abracasse",
+      "Ficasse comigo mesmo em silencio"
+    ]
+   },
+
+        {
+    q: "Qual destas coisas eu gostaria que uma pessoa especial nunca fizesse comigo?" ,
+    o: [
+      "Mentir",
+      "Me ignorar ",
+      "Me comparar com outras pessoas",
+      "Quebrar minha confianca"
+    ]
+   },
+
+
+        {
+    q: "O que faria eu pensar que uma pessoa relmente me conhece" ,
+    o: [
+      "Ela perceber quando nao estou bem",
+      "Ela lembrar de pequenos detalhes sobre mim",
+      "Ela entender meus silencios",
+      "Ela saber quando preciso de apoio sem eu pedir"
+    ]
+   }
+
+
+
+
+
+
+]
+
+
+let perguntasdapartida = [];
+
+const QUESTION_CYCLE_KEY = 'quemMeConhecePerguntasUsadas_v2';
+
+function carregarPerguntasUsadas() {
+  try {
+    const usadas = JSON.parse(localStorage.getItem(QUESTION_CYCLE_KEY) || '[]');
+    return Array.isArray(usadas) ? usadas : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function salvarPerguntasUsadas(usadas) {
+  localStorage.setItem(QUESTION_CYCLE_KEY, JSON.stringify(usadas));
+}
+
+function embaralhar(lista) {
+  const copia = [...lista];
+  for (let i = copia.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copia[i], copia[j]] = [copia[j], copia[i]];
+  }
+  return copia;
+}
+
+function idPergunta(pergunta) {
+  return pergunta.q;
+}
+
+function SelecionarPerguntasAaleatorias() {
+  let usadas = carregarPerguntasUsadas();
+
+  if (usadas.length >= perguntasdapartida.length) usadas = [];
+
+  const disponiveis = QUESTIONS.filter(
+    pergunta => !usadas.includes(idPergunta(pergunta))
+  );
+
+  let selecionadas = embaralhar(disponiveis).slice(0, 25);
+
+  if (selecionadas.length < 25) {
+    const ids = new Set(selecionadas.map(idPergunta));
+    const complemento = embaralhar(
+      QUESTIONS.filter(pergunta => !ids.has(idPergunta(pergunta)))
+    );
+    selecionadas = selecionadas.concat(
+      complemento.slice(0, 25 - selecionadas.length)
+    );
+    salvarPerguntasUsadas([]);
+  } else {
+    const novasUsadas = [...new Set([
+      ...usadas,
+      ...selecionadas.map(idPergunta)
+    ])];
+    salvarPerguntasUsadas(
+      novasUsadas.length >= perguntasdapartida.length ? [] : novasUsadas
+    );
+  }
+
+  perguntasdapartida = selecionadas;
+}
+
+/* =========================
+   ESTADO
+========================= */
+
+let state = {};
+/* =========================
+   DINHEIRO
+========================= */
+
+function fmtMoney(v) {
+  return v.toLocaleString('pt-MZ') + "MT";
+}
+
+/* =========================
+   TROCA DE TELA
+========================= */
+
+function showScreen(id) {
+
+  document
+    .querySelectorAll('.screen')
+    .forEach(s => s.classList.remove('active'));
+
+  document
+    .getElementById(id)
+    .classList.add('active');
+
+  /* Ativa modo tela cheia somente durante o jogo */
+
+  if (id === 'game-screen') {
+    document.body.classList.add('game-playing');
+  } else {
+    document.body.classList.remove('game-playing');
+  }
+}
+
+/* =========================
+   COMEÇAR JOGO
+========================= */
+
+function startGame() {
+
+  const p1 = document.getElementById('p1-name').value.trim();
+  const p2 = document.getElementById('p2-name').value.trim();
+
+  if (!p1 || !p2) {
+    alert('Digite o nome dos dois jogadores para começar.');
+    if (!p1) document.getElementById('p1-name').focus();
+    else document.getElementById('p2-name').focus();
+    return;
+  }
+
+  SelecionarPerguntasAaleatorias();
+
+  state = {
+    p1,
+    p2,
+    index: 0,
+    phase: 'secret',
+    secretAnswer: null,
+    correct: 0,
+    streak: 0,
+    bestStreak: 0,
+    bonus: 0,
+    timer: null,
+    timerTimeout: null,
+    timeLeft: 30
+  };
+
+  buildLadder();
+
+  showScreen('game-screen');
+
+  loadQuestion();
+}
+
+/* =========================
+   ESCADA
+========================= */
+
+function buildLadder() {
+
+  const ladder =
+    document.getElementById('ladder');
+
+  ladder.innerHTML = "";
+
+  LADDER.forEach((val, i) => {
+
+    const item =
+      document.createElement('div');
+
+    item.className = 'ladder-item';
+
+    item.id = 'ladder-' + i;
+
+    item.innerHTML = `
+      <span>${i + 1}</span>
+      <span>${fmtMoney(val)}</span>
+    `;
+
+    ladder.appendChild(item);
+
+  });
+
+  updateLadder();
+}
+
+/* =========================
+   ATUALIZAR ESCADA
+========================= */
+
+function updateLadder() {
+
+  LADDER.forEach((val, i) => {
+
+    const el =
+      document.getElementById('ladder-' + i);
+
+    if (!el) return;
+
+    el.classList.remove(
+      'current',
+      'passed'
+    );
+
+    if (i === state.index) {
+
+      el.classList.add('current');
+
+    } else if (i < state.correct) {
+
+      el.classList.add('passed');
+
+    }
+
+  });
+
+}
+
+/* =========================
+   JOGADORES
+========================= */
+
+function currentSecretPlayer() {
+
+  return state.index % 2 === 0
+    ? state.p1
+    : state.p2;
+}
+
+function currentGuesserPlayer() {
+
+  return state.index % 2 === 0
+    ? state.p2
+    : state.p1;
+}
+
+/* =========================
+   CARREGAR PERGUNTA
+========================= */
+
+function loadQuestion() {
+
+  clearInterval(state.timer);
+
+  state.phase = 'secret';
+  state.secretAnswer = null;
+  state.timeLeft = 30;
+
+  document.getElementById('question-count')
+    .textContent =
+    `Pergunta ${state.index + 1} de ${perguntasdapartida.length}`;
+
+  document.getElementById('score-count')
+    .textContent =
+    `Acertos: ${state.correct}`;
+
+  document.getElementById('next-btn')
+    .style.display = 'none';
+
+  document.getElementById('feedback')
+    .textContent = '';
+
+  document.getElementById('feedback')
+    .className = 'feedback';
+
+  renderSecretPhase();
+
+  updateLadder();
+
+  startTimer();
+}
+
+/* =========================
+   TIMER
+========================= */
+
+function startTimer() {
+
+  const bar = document.getElementById('timer-bar');
+
+  // Cancela qualquer temporizador anterior
+  clearInterval(state.timer);
+  clearTimeout(state.timerTimeout);
+
+  state.timeLeft = 30;
+
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+
+  // Pequeno atraso apenas para permitir a animação visual da barra
+  state.timerTimeout = setTimeout(() => {
+    bar.style.transition = 'width 30s linear';
+    bar.style.width = '0%';
+  }, 50);
+
+  state.timer = setInterval(() => {
+
+    state.timeLeft--;
+
+    if (state.timeLeft <= 0) {
+
+      clearInterval(state.timer);
+      clearTimeout(state.timerTimeout);
+      state.timer = null;
+      state.timerTimeout = null;
+
+      autoAdvanceOnTimeout();
+    }
+
+  }, 1000);
+}
+
+/* =========================
+   TEMPO ESGOTADO
+========================= */
+
+function autoAdvanceOnTimeout() {
+
+  if (state.phase === 'secret') {
+
+    const q =
+      perguntasdapartida[state.index];
+
+    state.secretAnswer =
+      Math.floor(
+        Math.random() * q.o.length
+      );
+
+    renderGuessPhase();
+
+    startTimer();
+
+  } else {
+
+    handleGuess(-1);
+
+  }
+}
+
+/* =========================
+   FASE SECRETA
+========================= */
+
+function renderSecretPhase() {
+
+  const q =
+    perguntasdapartida[state.index];
+
+  const banner =
+    document.getElementById('turn-banner');
+
+  banner.className =
+    'turn-banner secret';
+
+  banner.textContent =
+    `🤫 Vez de ${currentSecretPlayer()}: responda sobre você mesmo(a) — não deixe seu parceiro(a) ver a tela!`;
+
+  document.getElementById('question-text')
+    .textContent = q.q;
+
+  const opts =
+    document.getElementById('options');
+
+  opts.innerHTML = '';
+
+  q.o.forEach((text, i) => {
+
+    const div =
+      document.createElement('div');
+
+    div.className = 'option';
+
+    div.innerHTML = `
+      <span class="letter">
+        ${String.fromCharCode(65 + i)}
+      </span>
+
+      <span>${text}</span>
+    `;
+
+    div.onclick = () => {
+
+      state.secretAnswer = i;
+
+      clearInterval(state.timer);
+
+      renderGuessPhase();
+
+      startTimer();
+
+    };
+
+    opts.appendChild(div);
+
+  });
+}
+
+/* =========================
+   FASE DE ADIVINHAÇÃO
+========================= */
+
+function renderGuessPhase() {
+
+  const q =
+    perguntasdapartida[state.index];
+
+  const banner =
+    document.getElementById('turn-banner');
+
+  banner.className =
+    'turn-banner guess';
+
+  banner.textContent =
+    `🎯 descubra ${currentGuesserPlayer()}: qual você acha que foi a resposta de ${currentSecretPlayer()}?`;
+
+  document.getElementById('question-text')
+    .textContent = q.q;
+
+  const opts =
+    document.getElementById('options');
+
+  opts.innerHTML = '';
+
+  q.o.forEach((text, i) => {
+
+    const div =
+      document.createElement('div');
+
+    div.className = 'option';
+
+    div.innerHTML = `
+      <span class="letter">
+        ${String.fromCharCode(65 + i)}
+      </span>
+
+      <span>${text}</span>
+    `;
+
+    div.onclick = () =>
+      handleGuess(i);
+
+    opts.appendChild(div);
+
+  });
+
+  state.phase = 'guess';
+}
+
+/* =========================
+   VERIFICAR RESPOSTA
+========================= */
+
+function handleGuess(guessIndex) {
+
+  // PARA COMPLETAMENTE O TEMPO AO RESPONDER
+  clearInterval(state.timer);
+  clearTimeout(state.timerTimeout);
+  state.timer = null;
+  state.timerTimeout = null;
+
+  const bar = document.getElementById('timer-bar');
+  if (bar) {
+    bar.style.transition = 'none';
+    bar.style.width = `${Math.max(0, (state.timeLeft / 30) * 100)}%`;
+  }
+
+  const opts =
+    document.querySelectorAll(
+      '#options .option'
+    );
+
+  opts.forEach(o =>
+    o.classList.add('disabled')
+  );
+
+  const correctIndex =
+    state.secretAnswer;
+
+  const feedback =
+    document.getElementById('feedback');
+
+  if (guessIndex === correctIndex) {
+
+    if (opts[guessIndex]) {
+      opts[guessIndex].classList.add('correct');
+    }
+
+    state.correct++;
+    state.streak++;
+    state.bestStreak = Math.max(
+      state.bestStreak,
+      state.streak
+    );
+
+    const speedBonus =
+      Math.max(0, Math.floor(state.timeLeft / 5));
+
+    state.bonus += speedBonus;
+
+    feedback.textContent =
+      `🎉 Acertou! 🔥 Sequência: ${state.streak}` +
+      (speedBonus ? ` +${speedBonus} bônus` : '');
+
+    feedback.className =
+      'feedback correct';
+
+  } else {
+
+    if (opts[correctIndex]) {
+      opts[correctIndex].classList.add('correct');
+    }
+
+    if (guessIndex >= 0 && opts[guessIndex]) {
+      opts[guessIndex].classList.add('wrong');
+    }
+
+    feedback.textContent =
+      "💔 Não foi dessa vez... bom motivo pra conversarem mais!";
+
+    feedback.className =
+      'feedback wrong';
+
+    state.streak = 0;
+  }
+
+  document.getElementById('score-count')
+    .textContent =
+    `Acertos: ${state.correct}`;
+
+  const streakEl =
+    document.getElementById('streak-count');
+
+  if (streakEl) {
+    streakEl.textContent =
+      `🔥 Sequência: ${state.streak}`;
+  }
+
+  updateLadder();
+
+  // ÚLTIMA PERGUNTA: vai direto para os resultados.
+  if (state.index >= perguntasdapartida.length - 1) {
+
+    document.getElementById('next-btn')
+      .style.display = 'none';
+
+    setTimeout(() => {
+      finishGame();
+    }, 700);
+
+    return;
+  }
+
+  // Nas outras perguntas, mostra o botão normalmente.
+  document.getElementById('next-btn')
+    .style.display = 'block';
+}
+
+/* =========================
+   PRÓXIMA PERGUNTA
+========================= */
+
+function nextStep() {
+
+  clearInterval(state.timer);
+  clearTimeout(state.timerTimeout);
+  state.timer = null;
+  state.timerTimeout = null;
+
+  state.index++;
+
+  if (state.index >= perguntasdapartida.length) {
+
+    finishGame();
+
+  } else {
+
+    loadQuestion();
+
+  }
+}
+
+/* =========================
+   FINAL DO JOGO
+========================= */
+
+function finishGame() {
+
+  clearInterval(state.timer);
+  clearTimeout(state.timerTimeout);
+  state.timer = null;
+  state.timerTimeout = null;
+
+  const total =
+    perguntasdapartida.length;
+
+  const percent =
+    Math.round(
+      (state.correct / total) * 100
+    );
+
+  const prizeIndex =
+    Math.min(
+      Math.max(state.correct - 1, 0),
+      LADDER.length - 1
+    );
+
+  const prize =
+    state.correct === 0
+      ? 0
+      : LADDER[prizeIndex];
+
+  let emoji;
+  let title;
+  let sub;
+
+  if (percent >= 90) {
+
+    emoji = "💞";
+    title = "Almas Gêmeas!";
+
+    sub =
+      `${state.p1} e ${state.p2} se conhecem de um jeito raro. Nível de conexão máximo!`;
+
+  } else if (percent >= 70) {
+
+    emoji = "😍";
+    title = "Casal Afinado!";
+
+    sub =
+      `Vocês dois realmente prestam atenção um no outro. Continuem assim!`;
+
+  } else if (percent >= 50) {
+
+    emoji = "😄";
+    title = "No Caminho Certo!";
+
+    sub =
+      `Ainda há descobertas por vir — e isso também é parte da graça!`;
+
+  } else {
+
+    emoji = "💬";
+    title = "Hora de Conversar Mais!";
+
+    sub =
+      `Aproveitem essa noite para se conhecerem um pouquinho mais.`;
+  }
+
+  document.getElementById('result-emoji')
+    .textContent = emoji;
+
+  document.getElementById('result-title')
+    .textContent = title;
+
+  document.getElementById('result-sub')
+    .textContent = sub;
+
+  document.getElementById('stat-correct')
+    .textContent =
+    `${state.correct}/${total}`;
+
+  document.getElementById('stat-percent')
+    .textContent =
+    `${percent}%`;
+
+  document.getElementById('stat-prize')
+    .textContent =
+    fmtMoney(prize);
+
+  const streakEl = document.getElementById('stat-streak');
+  if (streakEl) streakEl.textContent = state.bestStreak;
+
+  const achievements = [];
+  if (state.correct >= 1) achievements.push('🏅 Primeiro acerto');
+  if (state.bestStreak >= 5) achievements.push('🔥 Sequência de 5');
+  if (state.bestStreak >= 10) achievements.push('💥 Sequência de 10');
+  if (percent === 100) achievements.push('💎 Perfeição');
+  if (state.bonus >= 20) achievements.push('⚡ Mestre da velocidade');
+
+  const achievementEl = document.getElementById('result-achievements');
+  if (achievementEl) {
+    achievementEl.innerHTML = achievements.length
+      ? achievements.map(a => `<div class="achievement">${a}</div>`).join('')
+      : '<div class="achievement">🎯 Continue jogando para desbloquear conquistas!</div>';
+  }
+
+  salvarHistorico({
+    data: new Date().toLocaleString('pt-BR'),
+    jogadores: `${state.p1} & ${state.p2}`,
+    acertos: state.correct,
+    percent,
+    melhorSequencia: state.bestStreak,
+    bonus: state.bonus,
+    premio: prize
+  });
+
+  showScreen('result-screen');
+}
+
+/* =========================
+   REINICIAR
+========================= */
+
+function salvarHistorico(partida) {
+  try {
+    const historico = JSON.parse(
+      localStorage.getItem('quemMeConheceHistorico_v1') || '[]'
+    );
+    historico.unshift(partida);
+    localStorage.setItem(
+      'quemMeConheceHistorico_v1',
+      JSON.stringify(historico.slice(0, 20))
+    );
+  } catch (e) {}
+}
+
+function resetGame() {
+
+  document.getElementById('p1-name')
+    .value = state.p1 || '';
+
+  document.getElementById('p2-name')
+    .value = state.p2 || '';
+
+  showScreen('setup-screen');
+}
+
+</script>
+
+</body>
+</html>
